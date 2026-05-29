@@ -1,0 +1,109 @@
+/**
+ * La clase Administra el historial de consumos de una máquina específica.
+ * sus campos: 
+ *  El modelo de la máquina (String).
+ * La colección de registros de consumo utilizando
+ * un ArrayList de objetos de tipo RegistroConsumo.
+ */
+import java.util.ArrayList;
+public class MaquinaAgricola
+{
+    private String modelomaquina;
+    private ArrayList<RegistroConsumo> listregistro;
+    
+/**
+ * Debe recibir el modelo de la máquina.  
+ * Validar que no sea null ni vacío
+ * (lanzar IllegalArgumentException si falla).
+ * inicializamos el objeto ArrayList dentro de la variable lisregistro.
+ */
+    public MaquinaAgricola( String modelomaquina){
+        if( modelomaquina== null || modelomaquina.equals("")){
+            throw new IllegalArgumentException("Nombre maquina vacio");
+        }
+        this.modelomaquina=modelomaquina;
+        listregistro= new ArrayList<>();
+    }
+/**
+ * Recibe los datos, crea un objeto anónimo de tipo RegistroConsumo
+ * y lo añade directamente al historial de la máquina.
+ * Nota: Dejar que el constructor de RegistroConsumo
+ * maneje las excepciones de los parámetros inválidos.
+ * De esta manera estamos implicitamente brindando datos automaticamente
+ * a la clase RegistroConsumo con un objeto anonimo.
+ */
+    
+    public void registrarConsumo(int dia, double litros, String operario){
+        listregistro.add(new RegistroConsumo(dia , litros , operario));
+    }
+/**
+ * devolver la sumatoria total de litros consumidos 
+ * por la máquina a lo largo de todo su historial.
+ * Si no hay registros, devuelve 0.0
+ * implementamos un for-each para recorrer
+ * la lista completa de una manera mas limpia.
+ * llamamos al metodo externo getLitrosCargados
+ * para que nos devuelva los litros en cada registroconsumo
+ * de la lista y sumarlo a la variable sumatoria.
+ */
+    
+    public double calcularTotalLitros(){
+        double sumatoria=0;
+        for(RegistroConsumo listelemento : listregistro){
+            sumatoria += listelemento.getLitrosCargados();
+        }
+        return sumatoria;
+    }
+/**
+ * Precondición: El diaBuscado debe estar entre 1 y 31
+ * El método verifica si el operario indicado realizó 
+ * al menos una carga en el día especificado.
+ * El bucle se deteniene (corte limpio) inmediatamente en el 
+ * momento exacto en que se encuentra la primera coincidencia.
+ * usamos metodos externos sobre la lista.
+ */
+    
+    public boolean operarioHizoCargaEnDia(String nombreOperario, int diaBuscado){
+        assert diaBuscado>0 && diaBuscado<=31 : "Dia invalido";
+        int indice=0;
+        boolean cargarealizada=false;
+        while( indice<listregistro.size() && !cargarealizada){
+            RegistroConsumo listoper= listregistro.get(indice);
+            if(listoper.getNombreOperario().equals(nombreOperario) && listoper.getDia()==diaBuscado && listoper.getLitrosCargados()>0){
+                cargarealizada=true;
+            }
+            indice++;
+            
+        }
+        return cargarealizada;
+        
+    }
+/**
+ * Al principio, la variable guardarmayor
+ * guarda la dirección de memoria del primer registro de la lista.
+ * Cuando el bucle avanza y evalúa el siguiente objeto/elemento (listmm)
+ * la condición if entra a mirar adentro de los objetos 
+ * usando el método getLitros() de tipo double que devuelve los litroscargados
+ * si el objeto listmm cargo mas litros que el guardarmayor, entonces 
+ * guardamos listmm dentro de la variable guardar mayor
+ * una vez se cumpla todo el bucle dentro de guardarmayor
+ * quedara guardado el elemento/objeto que mayor litros se cargo
+ * y devolvera la variable guardarmayor.
+ * si la lista esta vacía según el contrato establecido devolver null.
+ */
+    
+    public RegistroConsumo obtenerMaximaCarga(){
+        if (listregistro.isEmpty()) {
+            return null;
+        }
+        RegistroConsumo guardarmayor = listregistro.get(0);
+        for(RegistroConsumo listmm : listregistro){
+            if(listmm.getLitrosCargados() > guardarmayor.getLitrosCargados()){
+                guardarmayor=listmm;
+            }
+        }
+        return guardarmayor;
+    }
+    
+    
+}

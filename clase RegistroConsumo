@@ -1,0 +1,42 @@
+/**
+ * La Clase Representa una carga individual de combustible en una máquina.
+ * campos necesarios para almacenar: 
+ * el día del mes (entero),
+ * la cantidad de litros cargados (punto flotante) 
+ * y el nombre del operario que realizó la carga (cadena de texto).
+ */
+public class RegistroConsumo
+{
+    private int dia;
+    private double litroscargados;
+    private String operario;
+    
+/**
+ * Precondiciones obligatorias para constructor (Defensa con Excepciones):
+ * Si el día no está entre 1 y 31
+ * o si los litros son menores o iguales a 0
+ * o si el nombre del operario es null o una cadena vacía ("")
+ * el constructor debe interrumpir la ejecución lanzando una IllegalArgumentException con un mensaje explicativo claro.
+ */
+    public RegistroConsumo( int dia, double litroscargados, String operario){
+        if(dia<=0 || dia>31 || litroscargados<=0 || operario==null || operario.equals("")){
+            throw new IllegalArgumentException("Parametros invalidos");
+        }
+        this.dia=dia;
+        this.litroscargados=litroscargados;
+        this.operario=operario;
+        
+    }
+    public String getRegistroConsumo(){
+        return "dia: "+dia +":"+ "litros cargados= " + litroscargados + "operario a cargo: " + operario;
+    }
+    public int getDia(){
+        return dia;
+    }
+    public double getLitrosCargados(){
+        return litroscargados;
+    }
+    public String getNombreOperario(){
+        return operario;
+    }
+}
